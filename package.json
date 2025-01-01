@@ -1,5 +1,6 @@
 {
   "name": "rocket-game",
+  "homepage": "https://ketan1406.github.io/threejs-rocket-game/",
   "private": true,
   "version": "0.0.0",
   "type": "module",

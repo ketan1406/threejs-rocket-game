@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 export default defineConfig({
-  base: '/threejs-rocket-game/',
+  base: '/threejs-rocket-game',
   optimizeDeps: {
     include: [
       '@tweenjs/tween.js',
