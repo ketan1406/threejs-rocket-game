@@ -9,9 +9,7 @@
     body {
       margin: 0;
       overflow: hidden;
-      /* Prevent scrollbars */
       background-color: black;
-      /* Optional: Set a background color */
     }
 
     #message {
@@ -41,15 +39,47 @@
         transform: translate(-50%, -50%) scale(1);
       }
     }
+
+    /* On-Screen Controls */
+    #controls {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+    }
+
+    #controls button {
+      width: 60px;
+      height: 60px;
+      font-size: 1.5em;
+      border: none;
+      border-radius: 5px;
+      background-color: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+    }
+
+    #controls button:active {
+      background-color: rgba(255, 255, 255, 1);
+    }
   </style>
-  <script type="module" crossorigin src="/threejs-rocket-game/assets/index-CiXea4V1.js"></script>
+  <script type="module" crossorigin src="/threejs-rocket-game/assets/index-ErZ9Odad.js"></script>
 </head>
 
 <body>
   <!-- Message Overlay -->
-  <div id="message">You have hit the target just like you hit my heart with an arrow ❤️‍🔥</div>
+  <div id="message">💘💘You have hit the target just like you hit my heart with an arrow 💘💘</div>
 
-  <!-- Main Script -->
+  <!-- On-Screen Controls -->
+  <div id="controls">
+    <button id="rotate-left">⟲</button>
+    <button id="rotate-right">⟳</button>
+    <button id="thrust">↑</button>
+    <button id="fire">🔫</button>
+  </div>
+
+  <!-- Main Script --> <!-- Changed to relative path -->
 </body>
 
 </html>
