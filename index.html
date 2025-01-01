@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Three play 00</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      /* Prevent scrollbars */
+      background-color: black;
+      /* Optional: Set a background color */
+    }
+
+    #message {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2em;
+      color: white;
+      text-align: center;
+      pointer-events: none;
+      animation: beat 1s infinite;
+    }
+
+    /* Beating animation */
+    @keyframes beat {
+      0% {
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      50% {
+        transform: translate(-50%, -50%) scale(1.1);
+      }
+
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Message Overlay -->
+  <div id="message">You have hit the target just like you hit my heart with an arrow ❤️‍🔥</div>
+
+  <!-- Main Script -->
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
