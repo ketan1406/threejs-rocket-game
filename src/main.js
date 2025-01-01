@@ -25,7 +25,7 @@ controls.dampingFactor = 0.03;
 const manager = new THREE.LoadingManager();
 const loader = new GLTFLoader(manager);
 const glbs = ["rocket2", "saucer"];
-const path = "/assets/"; // Absolute path to public/assets/
+const path = "assets/"; // Absolute path to public/assets/
 const sceneData = {
   models: [],
   fontData: null,
