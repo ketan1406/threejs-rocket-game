@@ -174,31 +174,67 @@ function initScene(data) {
     }
   });
 
-  // Touch Controls
+  // Touch Controls with Pointer Events
   const rotateLeftBtn = document.getElementById('rotate-left');
   const rotateRightBtn = document.getElementById('rotate-right');
   const thrustBtn = document.getElementById('thrust');
   const fireBtn = document.getElementById('fire');
 
   // Rotate Left
-  rotateLeftBtn.addEventListener('touchstart', () => rocket.userData.rotateLeft(true));
-  rotateLeftBtn.addEventListener('touchend', () => rocket.userData.rotateLeft(false));
+  rotateLeftBtn.addEventListener('pointerdown', (event) => {
+    event.preventDefault();
+    console.log("Rotate Left Pressed");
+    rocket.userData.rotateLeft(true);
+  });
+  rotateLeftBtn.addEventListener('pointerup', (event) => {
+    event.preventDefault();
+    console.log("Rotate Left Released");
+    rocket.userData.rotateLeft(false);
+  });
+  rotateLeftBtn.addEventListener('pointerleave', (event) => {
+    event.preventDefault();
+    console.log("Rotate Left Pointer Left");
+    rocket.userData.rotateLeft(false);
+  });
 
   // Rotate Right
-  rotateRightBtn.addEventListener('touchstart', () => rocket.userData.rotateRight(true));
-  rotateRightBtn.addEventListener('touchend', () => rocket.userData.rotateRight(false));
+  rotateRightBtn.addEventListener('pointerdown', (event) => {
+    event.preventDefault();
+    console.log("Rotate Right Pressed");
+    rocket.userData.rotateRight(true);
+  });
+  rotateRightBtn.addEventListener('pointerup', (event) => {
+    event.preventDefault();
+    console.log("Rotate Right Released");
+    rocket.userData.rotateRight(false);
+  });
+  rotateRightBtn.addEventListener('pointerleave', (event) => {
+    event.preventDefault();
+    console.log("Rotate Right Pointer Left");
+    rocket.userData.rotateRight(false);
+  });
 
   // Thrust
-  thrustBtn.addEventListener('touchstart', () => rocket.userData.thrust(true));
-  thrustBtn.addEventListener('touchend', () => rocket.userData.thrust(false));
+  thrustBtn.addEventListener('pointerdown', (event) => {
+    event.preventDefault();
+    console.log("Thrust Pressed");
+    rocket.userData.thrust(true);
+  });
+  thrustBtn.addEventListener('pointerup', (event) => {
+    event.preventDefault();
+    console.log("Thrust Released");
+    rocket.userData.thrust(false);
+  });
+  thrustBtn.addEventListener('pointerleave', (event) => {
+    event.preventDefault();
+    console.log("Thrust Pointer Left");
+    rocket.userData.thrust(false);
+  });
 
   // Fire
-  fireBtn.addEventListener('touchstart', () => rocket.userData.fire());
+  fireBtn.addEventListener('pointerdown', (event) => {
+    event.preventDefault();
+    console.log("Fire Pressed");
+    rocket.userData.fire();
+  });
 }
-
-function handleWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
-window.addEventListener('resize', handleWindowResize, false);
