@@ -1,8 +1,8 @@
-// src/main.js
+// rocket-game/src/main.js
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { update } from '@tweenjs/tween.js'; // Correct Import
+import { update as tweenUpdate } from '@tweenjs/tween.js'; // Renamed to avoid conflict
 import getRocket from './getRocket.js';
 import getSaucer from './getSaucer.js';
 import getStarfield from './getStarfield.js';
@@ -25,23 +25,38 @@ controls.dampingFactor = 0.03;
 const manager = new THREE.LoadingManager();
 const loader = new GLTFLoader(manager);
 const glbs = ["rocket2", "saucer"];
-const path = "assets/"; // Absolute path to public/assets/
+const path = "assets/"; // Relative path
 const sceneData = {
   models: [],
   fontData: null,
 };
+
+// Enhanced Error Handling for Loading Manager
 manager.onLoad = () => initScene(sceneData);
+manager.onError = (url) => {
+  console.error(`There was an error loading ${url}`);
+};
+
+// Load Models with Error Logging
 glbs.forEach((name) => {
-  loader.load(`${path}${name}.glb`, (glb) => {
-    glb.name = name;
-    sceneData.models.push(glb);
-  });
+  loader.load(
+    `${path}${name}.glb`,
+    (glb) => {
+      glb.name = name;
+      sceneData.models.push(glb);
+    },
+    undefined,
+    (error) => {
+      console.error(`Error loading ${name}.glb:`, error);
+    }
+  );
 });
 
 function initScene(data) {
   let rocket = null;
   let saucer = null;
   const { models } = data;
+
   models.forEach((model) => {
     if (model.name === "rocket2") {
       rocket = getRocket(model.scene);
@@ -53,7 +68,13 @@ function initScene(data) {
     }
   });
 
-  const stars = getStarfield({ numStars: 500 });
+  // Check if both models are loaded
+  if (!rocket || !saucer) {
+    console.error("Rocket or Saucer model failed to load. Game initialization aborted.");
+    return;
+  }
+
+  const stars = getStarfield({ numStars: 2500 });
   scene.add(stars);
 
   // Add Lights
@@ -83,15 +104,13 @@ function initScene(data) {
   function showSuccessMessage() {
     const messageDiv = document.getElementById('message');
     messageDiv.style.display = 'block';
-    
-    // Optional: Add animation classes or styles
-    
+
     // Hide after a certain duration
     setTimeout(() => {
       messageDiv.style.display = 'none';
     }, 5000); // 5 seconds
   }
-  
+
   function handleCollision() {
     // Play hit animation
     saucer.userData.playHitAnimation();
@@ -101,7 +120,7 @@ function initScene(data) {
 
   function animate(t = 0) {
     requestAnimationFrame(animate);
-    update(t); // Correctly imported 'update' function
+    tweenUpdate(t); // Correctly imported 'update' function
 
     // Update game objects
     saucer.userData.update(t);
@@ -120,7 +139,7 @@ function initScene(data) {
     renderer.render(scene, camera);
     controls.update();
   }
-  
+
   animate();
 
   // Event listeners for controls
@@ -139,7 +158,7 @@ function initScene(data) {
       saucer.userData.sense(rocket.position);
     }
   });
-  
+
   window.addEventListener("keyup", (evt) => {
     if (evt.key === 'Space') {
       // Optional: Handle keyup for shooting if needed
@@ -154,9 +173,30 @@ function initScene(data) {
       rocket.userData.thrust(false);
     }
   });
+
+  // Touch Controls
+  const rotateLeftBtn = document.getElementById('rotate-left');
+  const rotateRightBtn = document.getElementById('rotate-right');
+  const thrustBtn = document.getElementById('thrust');
+  const fireBtn = document.getElementById('fire');
+
+  // Rotate Left
+  rotateLeftBtn.addEventListener('touchstart', () => rocket.userData.rotateLeft(true));
+  rotateLeftBtn.addEventListener('touchend', () => rocket.userData.rotateLeft(false));
+
+  // Rotate Right
+  rotateRightBtn.addEventListener('touchstart', () => rocket.userData.rotateRight(true));
+  rotateRightBtn.addEventListener('touchend', () => rocket.userData.rotateRight(false));
+
+  // Thrust
+  thrustBtn.addEventListener('touchstart', () => rocket.userData.thrust(true));
+  thrustBtn.addEventListener('touchend', () => rocket.userData.thrust(false));
+
+  // Fire
+  fireBtn.addEventListener('touchstart', () => rocket.userData.fire());
 }
 
-function handleWindowResize () {
+function handleWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
